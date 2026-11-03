@@ -1,0 +1,51 @@
+{
+  "name": "infinitive-cloud-bucket",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "format": "prettier --write .",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx src/db/migrate.ts",
+    "db:seed": "tsx scripts/seed.ts",
+    "check:s3": "tsx scripts/check-s3.ts",
+    "gen:secrets": "tsx scripts/gen-secrets.ts",
+    "dev:stack": "docker compose -f docker-compose.dev.yml up -d",
+    "dev:stack:down": "docker compose -f docker-compose.dev.yml down"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1161.0",
+    "@aws-sdk/lib-storage": "^3.1161.0",
+    "@aws-sdk/s3-request-presigner": "^3.1161.0",
+    "drizzle-orm": "^0.45.4",
+    "lucide-react": "^1.67.0",
+    "next": "^16.4.4",
+    "node-cron": "^4.6.0",
+    "pino": "^10.4.0",
+    "postgres": "^4.0.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.4",
+    "@types/node": "^22.20.5",
+    "@types/node-cron": "^3.0.11",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "dotenv": "^18.0.9",
+    "drizzle-kit": "^0.31.11",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.4.4",
+    "prettier": "^3.9.10",
+    "tailwindcss": "^4.3.4",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3",
+    "vitest": "^5.1.0"
+  }
+}

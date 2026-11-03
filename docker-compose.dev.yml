@@ -1,0 +1,23 @@
+name: bucket-dev
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: bucket
+      POSTGRES_PASSWORD: bucket
+      POSTGRES_DB: bucket
+    ports: ["127.0.0.1:5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+  seaweed:
+    image: chrislusf/seaweedfs:latest
+    command: server -s3 -s3.config=/etc/seaweedfs/s3.json -dir=/data -volume.max=50
+    ports: ["127.0.0.1:8333:8333", "127.0.0.1:9333:9333"]
+    volumes:
+      - seaweed:/data
+      - ./deploy/dev/s3.json:/etc/seaweedfs/s3.json:ro
+  mailpit:
+    image: axllent/mailpit:latest
+    ports: ["127.0.0.1:1025:1025", "127.0.0.1:8025:8025"]
+volumes:
+  pgdata:
+  seaweed:
