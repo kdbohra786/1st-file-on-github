@@ -16,7 +16,8 @@
     "check:s3": "tsx scripts/check-s3.ts",
     "gen:secrets": "tsx scripts/gen-secrets.ts",
     "dev:stack": "docker compose -f docker-compose.dev.yml up -d",
-    "dev:stack:down": "docker compose -f docker-compose.dev.yml down"
+    "dev:stack:down": "docker compose -f docker-compose.dev.yml down",
+    "test:api": "tsx scripts/e2e-api.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1161.0",
