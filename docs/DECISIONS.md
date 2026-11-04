@@ -30,3 +30,7 @@
 28. **Open-any-bucket grant** is the audit entry itself: an `admin.bucket_access` row by this admin for this tenant within the last 30 minutes. No separate grant table, so the reason can never be skipped or forgotten.
 29. **Reducing a quota below current usage is allowed**; the account simply cannot upload until usage drops or the quota is raised.
 30. **Audit CSV cells** starting with `= + - @` are prefixed with `'` to stop spreadsheet formula injection.
+31. **Company activity log** is the audit log filtered by the session's tenant; a `tenantId` query parameter is ignored.
+32. **Personal storage cap** counts every file the member owns (ready or uploading, including Trash) and is checked at upload start. Admin-created content in a member's home folder is owned by the admin, so it does not count against the member.
+33. **Permission "scope"**: `own` = own home folder with the member's flags plus granted shared folders; `shared` = granted shared folders only (home folder hidden).
+34. **Members never see company-wide admin screens**: `/company/*` redirects them to `/app` and `/api/v1/company/*` returns 403.

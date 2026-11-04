@@ -74,11 +74,13 @@ export async function listLinks(ctx: Ctx, nodeId?: string) {
   if (nodeId) await loadAuthorized(ctx, nodeId, "view");
   const mine = ctx.actor.role === "MEMBER" ? eq(shareLinks.createdBy, ctx.actor.id) : undefined;
   const rows = await getDb()
-    .select()
+    .select({ link: shareLinks, nodeName: nodes.name, nodeType: nodes.type, creator: users.email })
     .from(shareLinks)
+    .innerJoin(nodes, eq(nodes.id, shareLinks.nodeId))
+    .innerJoin(users, eq(users.id, shareLinks.createdBy))
     .where(and(eq(shareLinks.tenantId, ctx.tenantId), nodeId ? eq(shareLinks.nodeId, nodeId) : undefined, mine))
     .orderBy(desc(shareLinks.createdAt));
-  return rows.map(toDto);
+  return rows.map((r) => ({ ...toDto(r.link), nodeName: r.nodeName, nodeType: r.nodeType, creator: r.creator }));
 }
 
 async function ownLinkOrAdmin(ctx: Ctx, id: string) {

@@ -58,3 +58,12 @@ export const ADMIN_NAV = [
   { href: "/admin/audit", label: "Audit log" },
   { href: "/admin/settings", label: "Settings" },
 ];
+
+export const COMPANY_NAV = [
+  { href: "/company", label: "Overview" },
+  { href: "/company/files", label: "Files" },
+  { href: "/company/members", label: "Members" },
+  { href: "/company/shared", label: "Shared folders" },
+  { href: "/company/links", label: "Share links" },
+  { href: "/company/activity", label: "Activity" },
+];

@@ -44,12 +44,20 @@
 - Fixes found by browser tests: login now sends each role to its own panel and to `/change-password` when needed; panel pages re-check the session because server-action redirects skip `proxy.ts`
 - `npm run test:admin`: 40 real-browser checks (quota change visible to the company admin at once, suspension blocks login, reason required, CSV export, 403/401 for non-admins)
 
+## Done (Phase 1, slice 4c-2: Company Admin)
+- `/company`: overview (usage, users vs limit, file count, plan-expiry warning under 30 days, recent activity), Files (whole-bucket file manager incl. every member's folder and Trash), Members, Shared folders, Share links, Activity log
+- Members: create (emailed temporary password, forced change on first login), disable/enable, reset password, soft delete, plan user limit enforced, permission templates (Viewer, Contributor, Editor, Manager) with per-permission tweaks, scope (own + shared, or shared only), optional personal storage cap (enforced at upload)
+- Shared folders: create company-wide folders, grant/update/remove a member's permissions per folder; effective immediately
+- Share links overview with revoke; activity log with filters and CSV, always scoped to the session's company
+- `npm run test:company`: 41 real-browser checks including cross-company 404s and a spoofed `tenantId` query being ignored
+
 ## In progress
-- Phase 1 slice 4c-2: Company Admin screens (members, permission templates, shared folders, share-link overview, activity log)
+- Phase 1 finish line: Dockerfile + production compose + CI, then first deploy docs (`DEPLOY`, `SEAWEEDFS-SETUP`, `BACKUP-RESTORE`, `UPGRADE`, `OPERATIONS`), worker container
 
 ## Pending
 - Phase 0 leftovers: Playwright config, CI workflow, Dockerfile/prod compose, deploy docs (DEPLOY, SEAWEEDFS-SETUP, BACKUP-RESTORE, UPGRADE, OPERATIONS)
 - Phase 1 remaining: signup + password reset, share links, super admin CRUD (incl. open any bucket), member CRUD + permissions UI, Dockerfile/compose/CI, first server deploy
+- Company: logo/branding, forced password/expiry policy for share links, purge of trash from the UI
 - Admin: create/disable other Super Admins, branding settings, platform-wide share link list, optional delete inside an opened bucket
 - Share links: folder ZIP download, geo-IP fallback when not behind Cloudflare (country is read from `CF-IPCountry` only), tenant-wide forced password/expiry policy
 - Not yet covered by UI tests: pause/resume, folder drag-and-drop, grid view, search, move dialog, starred/recent

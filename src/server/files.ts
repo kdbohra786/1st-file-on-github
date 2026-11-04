@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { and, eq, inArray, isNull, isNotNull, sql } from "drizzle-orm";
 import { getDb } from "@/db/client";
-import { nodes, plans, platformSettings, sharedFolderAccess, tenants, uploadSessions } from "@/db/schema";
+import { nodes, plans, platformSettings, sharedFolderAccess, tenants, uploadSessions, users } from "@/db/schema";
 import { authorize } from "@/lib/authorize";
 import { PERMISSIONS, type Permission } from "@/lib/permissions";
 import { getStorage, objectKey } from "@/lib/storage";
@@ -260,6 +260,32 @@ export async function initUpload(
       "quota_exceeded",
       "Storage quota exceeded. Free up space or ask your administrator to increase your quota.",
     );
+  }
+  if (ctx.actor.role === "MEMBER") {
+    const [cap] = await getDb()
+      .select({ cap: users.storageCapBytes })
+      .from(users)
+      .where(eq(users.id, ctx.actor.id))
+      .limit(1);
+    if (cap?.cap !== null && cap?.cap !== undefined) {
+      const [mine] = await getDb()
+        .select({ total: sql<number>`COALESCE(SUM(${nodes.sizeBytes}), 0)::bigint` })
+        .from(nodes)
+        .where(
+          and(
+            eq(nodes.tenantId, ctx.tenantId),
+            eq(nodes.ownerId, ctx.actor.id),
+            eq(nodes.type, "file"),
+            inArray(nodes.status, ["ready", "uploading"]),
+          ),
+        );
+      if (Number(mine.total) + input.size > cap.cap)
+        throw new ApiError(
+          413,
+          "member_quota_exceeded",
+          "You have reached your personal storage limit. Ask your administrator to raise it.",
+        );
+    }
   }
   await assertNameFree(ctx.tenantId, input.parentId, input.name);
 

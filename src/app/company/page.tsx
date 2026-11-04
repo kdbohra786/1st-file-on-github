@@ -1,10 +1,10 @@
-import { FileManager } from "@/components/file-manager";
-import { PanelShell } from "@/components/panel-shell";
+import { CompanyPage } from "@/components/company-page";
+import { Overview } from "./overview";
 
 export default function Page() {
   return (
-    <PanelShell title="Company" accent="blue" roles={["COMPANY_ADMIN"]}>
-      <FileManager accent="blue" />
-    </PanelShell>
+    <CompanyPage>
+      <Overview />
+    </CompanyPage>
   );
 }
