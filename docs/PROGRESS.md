@@ -38,12 +38,19 @@
 - Blocked when revoked, expired, over the download limit, tenant suspended, or the item is in Trash; `noindex` headers on `/s/*`
 - `npm run test:share`: 24 real-browser checks
 
+## Done (Phase 1, slice 4c-1: Super Admin)
+- `/admin`: dashboard (accounts, members, files, storage used vs allocated, uploads/downloads today, signups chart, top 10, DB + storage health), companies and individuals (search, filter, create with emailed temporary password, edit name/status/quota/plan/expiry/max users, suspend, reactivate, soft delete), manual payments, plans CRUD, platform settings (signup on/off, blocked extensions), audit log with filters and CSV export
+- Open any bucket: reason required (min 5 chars), recorded in the audit log, valid 30 minutes, downloads audited
+- Fixes found by browser tests: login now sends each role to its own panel and to `/change-password` when needed; panel pages re-check the session because server-action redirects skip `proxy.ts`
+- `npm run test:admin`: 40 real-browser checks (quota change visible to the company admin at once, suspension blocks login, reason required, CSV export, 403/401 for non-admins)
+
 ## In progress
-- Phase 1 slice 4c: Super Admin screens (companies, individuals, plans, quota, open any bucket, audit) and Company Admin screens (members, permission templates, shared folders, share-link overview)
+- Phase 1 slice 4c-2: Company Admin screens (members, permission templates, shared folders, share-link overview, activity log)
 
 ## Pending
 - Phase 0 leftovers: Playwright config, CI workflow, Dockerfile/prod compose, deploy docs (DEPLOY, SEAWEEDFS-SETUP, BACKUP-RESTORE, UPGRADE, OPERATIONS)
 - Phase 1 remaining: signup + password reset, share links, super admin CRUD (incl. open any bucket), member CRUD + permissions UI, Dockerfile/compose/CI, first server deploy
+- Admin: create/disable other Super Admins, branding settings, platform-wide share link list, optional delete inside an opened bucket
 - Share links: folder ZIP download, geo-IP fallback when not behind Cloudflare (country is read from `CF-IPCountry` only), tenant-wide forced password/expiry policy
 - Not yet covered by UI tests: pause/resume, folder drag-and-drop, grid view, search, move dialog, starred/recent
 - Phase 2, Phase 3 as per master prompt

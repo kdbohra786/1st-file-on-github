@@ -1,5 +1,7 @@
 // Real-browser auth flows: signup, login, forgot/reset password via Mailpit. Requires dev stack + `npm run dev`.
+import "dotenv/config";
 import { chromium } from "playwright";
+import postgres from "postgres";
 
 const BASE = process.env.E2E_BASE ?? "http://localhost:3000";
 const MAILPIT = process.env.MAILPIT ?? "http://localhost:8025";
@@ -33,6 +35,9 @@ async function resetLinkFor(to) {
   }
 }
 
+const sqlRl = postgres(process.env.DATABASE_URL, { max: 1 });
+await sqlRl`DELETE FROM rate_limits`; // test hygiene: earlier runs may have used up per-IP limits
+await sqlRl.end();
 const browser = await chromium.launch();
 const page = await (await browser.newContext()).newPage();
 

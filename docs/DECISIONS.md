@@ -25,3 +25,8 @@
 23. **Share tokens are stored in plain text** (unique, 32 random bytes, base64url) because owners need to see their link again. Passwords are argon2id hashed.
 24. **Country for visits** comes from `CF-IPCountry` only for now; `geoip-lite` fallback is deferred because of its large bundled database.
 25. **Referrer-Policy: no-referrer** on `/s/*` so a share URL never leaks onward through links.
+26. **Docker in the build sandbox:** if `dockerd` will not start, kill a stale `containerd` (`pkill -x containerd; pkill -x dockerd`), remove `/var/run/docker.sock`, then start `dockerd` with `setsid nohup`.
+27. **Server-action redirects skip `proxy.ts`** (the target renders inline), so `PanelShell` re-checks session, forced password change and role on every panel page, and the login action decides the destination itself.
+28. **Open-any-bucket grant** is the audit entry itself: an `admin.bucket_access` row by this admin for this tenant within the last 30 minutes. No separate grant table, so the reason can never be skipped or forgotten.
+29. **Reducing a quota below current usage is allowed**; the account simply cannot upload until usage drops or the quota is raised.
+30. **Audit CSV cells** starting with `= + - @` are prefixed with `'` to stop spreadsheet formula injection.
