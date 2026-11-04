@@ -26,8 +26,14 @@
 - Actions are hidden from the listing's `can` permissions; the server still enforces
 - `npm run test:ui`: real Chromium run (browser -> SeaweedFS multipart upload with CORS + ETag, preview, download, hidden controls for Contributor and Viewer, route guard)
 
+## Done (Phase 1, slice 4a: self-service auth)
+- `/signup` (individual, Free plan, bucket provisioned, rate-limited, honours `signup_enabled` setting), `/forgot-password`, `/reset-password`
+- Reset tokens: random 32 bytes, stored hashed, 1 h expiry, atomically single-use; same response for known and unknown emails
+- Email via Nodemailer (Mailpit in dev)
+- `npm run test:auth`: 13 real-browser checks including the actual email from Mailpit
+
 ## In progress
-- Phase 1 slice 4: signup + password reset, share links, super admin + company admin management screens
+- Phase 1 slice 4b: share links, then super admin + company admin management screens
 
 ## Pending
 - Phase 0 leftovers: Playwright config, CI workflow, Dockerfile/prod compose, deploy docs (DEPLOY, SEAWEEDFS-SETUP, BACKUP-RESTORE, UPGRADE, OPERATIONS)

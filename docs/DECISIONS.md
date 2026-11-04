@@ -17,3 +17,6 @@
 15. **Member 2 "no own folder access"** is modelled as `member_permissions.scope = 'shared'` with no flags.
 16. **Per-member storage caps** (`users.storage_cap_bytes`) exist in the schema but are not enforced yet.
 17. **Never `pkill -f` a pattern that appears in your own command line** (it kills the calling shell); use `[n]ext` style patterns.
+18. **Signup reveals existing emails** ("could not create the account...") so a person is not silently stuck; password reset does not (identical response either way). Signup is rate-limited per IP.
+19. **A stale `.next` folder can make the dev server reload pages in a loop** after a production build in the same folder. Fix: stop dev, `rm -rf .next`, restart. Do not run dev and build against the same `.next`.
+20. **`"use server"` files may only export async functions**; shared helpers (e.g. `hashToken`) live in `src/server/`.
