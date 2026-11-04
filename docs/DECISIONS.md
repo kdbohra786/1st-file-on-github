@@ -20,3 +20,8 @@
 18. **Signup reveals existing emails** ("could not create the account...") so a person is not silently stuck; password reset does not (identical response either way). Signup is rate-limited per IP.
 19. **A stale `.next` folder can make the dev server reload pages in a loop** after a production build in the same folder. Fix: stop dev, `rm -rf .next`, restart. Do not run dev and build against the same `.next`.
 20. **`"use server"` files may only export async functions**; shared helpers (e.g. `hashToken`) live in `src/server/`.
+21. **Share unlock cookie** is `expiry.HMAC(linkId, expiry)` using `AUTH_SECRET`, HttpOnly, SameSite=Lax, 30 minutes. The password is never put in a URL.
+22. **Download counting is atomic** (`UPDATE ... WHERE download_count < max_downloads`), so concurrent requests cannot exceed the limit. Previews do not consume the budget.
+23. **Share tokens are stored in plain text** (unique, 32 random bytes, base64url) because owners need to see their link again. Passwords are argon2id hashed.
+24. **Country for visits** comes from `CF-IPCountry` only for now; `geoip-lite` fallback is deferred because of its large bundled database.
+25. **Referrer-Policy: no-referrer** on `/s/*` so a share URL never leaks onward through links.

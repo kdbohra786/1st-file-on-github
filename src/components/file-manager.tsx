@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api, ApiFail, formatBytes, type NodeDto } from "@/lib/client/api";
 import { uploadFile, type UploadHandle } from "@/lib/client/uploader";
+import { ShareDialog } from "./share-dialog";
 
 type Crumb = { id: string | null; name: string };
 type Usage = { usedBytes: number; quotaBytes: number; percent: number };
@@ -29,6 +30,7 @@ export function FileManager({ accent = "cyan" }: { accent?: "cyan" | "blue" }) {
   const [uploads, setUploads] = useState<UploadItem[]>([]);
   const [preview, setPreview] = useState<{ node: NodeDto; url: string; text?: string } | null>(null);
   const [dragging, setDragging] = useState(false);
+  const [sharing, setSharing] = useState<NodeDto | null>(null);
   const keyRef = useRef(0);
   const fileInput = useRef<HTMLInputElement>(null);
   const current = crumbs[crumbs.length - 1];
@@ -260,6 +262,11 @@ export function FileManager({ accent = "cyan" }: { accent?: "cyan" | "blue" }) {
                       Download
                     </button>
                   )}
+                  {canDo("share") && n.status === "ready" && (
+                    <button className={btn} onClick={() => setSharing(n)}>
+                      Share
+                    </button>
+                  )}
                   {canDo("rename_move") && (
                     <button
                       className={btn}
@@ -349,6 +356,8 @@ export function FileManager({ accent = "cyan" }: { accent?: "cyan" | "blue" }) {
           ))}
         </div>
       )}
+
+      {sharing && <ShareDialog node={sharing} onClose={() => setSharing(null)} />}
 
       {preview && (
         <div

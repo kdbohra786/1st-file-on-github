@@ -32,11 +32,18 @@
 - Email via Nodemailer (Mailpit in dev)
 - `npm run test:auth`: 13 real-browser checks including the actual email from Mailpit
 
+## Done (Phase 1, slice 4b: share links)
+- Owner side: create (password, expiry, max downloads, view-only), list, revoke, per-link analytics (views, downloads, unique visitors, countries, timeline); Share dialog in the file manager
+- Public side: `/s/<token>` page (file or folder listing, preview, download), password gate with signed 30-minute cookie, per-link and per-client attempt limits, 90 s presigned GETs, atomic download counting, folder links confined to their own subtree
+- Blocked when revoked, expired, over the download limit, tenant suspended, or the item is in Trash; `noindex` headers on `/s/*`
+- `npm run test:share`: 24 real-browser checks
+
 ## In progress
-- Phase 1 slice 4b: share links, then super admin + company admin management screens
+- Phase 1 slice 4c: Super Admin screens (companies, individuals, plans, quota, open any bucket, audit) and Company Admin screens (members, permission templates, shared folders, share-link overview)
 
 ## Pending
 - Phase 0 leftovers: Playwright config, CI workflow, Dockerfile/prod compose, deploy docs (DEPLOY, SEAWEEDFS-SETUP, BACKUP-RESTORE, UPGRADE, OPERATIONS)
 - Phase 1 remaining: signup + password reset, share links, super admin CRUD (incl. open any bucket), member CRUD + permissions UI, Dockerfile/compose/CI, first server deploy
+- Share links: folder ZIP download, geo-IP fallback when not behind Cloudflare (country is read from `CF-IPCountry` only), tenant-wide forced password/expiry policy
 - Not yet covered by UI tests: pause/resume, folder drag-and-drop, grid view, search, move dialog, starred/recent
 - Phase 2, Phase 3 as per master prompt

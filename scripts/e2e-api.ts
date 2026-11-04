@@ -168,7 +168,8 @@ async function main() {
   );
 
   console.log("quota");
-  const [t] = await sql`SELECT id, quota_bytes, used_bytes FROM tenants WHERE type='individual' LIMIT 1`;
+  const [t] =
+    await sql`SELECT t.id, t.quota_bytes, t.used_bytes FROM tenants t JOIN users u ON u.tenant_id = t.id WHERE u.email = 'individual@demo.infinitivecloud.com'`;
   const indHome = (await ind.api("GET", "/nodes")).json.items[0].id;
   await sql`UPDATE tenants SET quota_bytes = used_bytes + 1000 WHERE id = ${t.id}`;
   const over = await ind.upload(indHome, "big.txt", Buffer.alloc(5000, 1));
