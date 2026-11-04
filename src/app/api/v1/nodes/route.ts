@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireCtx } from "@/server/context";
 import { handle } from "@/server/errors";
-import { createFolder, listChildren } from "@/server/files";
+import { createFolder, listChildren, permissionsIn } from "@/server/files";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +13,8 @@ export async function GET(req: Request) {
     const ctx = await requireCtx(req);
     const p = new URL(req.url).searchParams.get("parentId");
     const items = await listChildren(ctx, p ? uuid.parse(p) : null);
-    return NextResponse.json({ items });
+    const can = p ? await permissionsIn(ctx, uuid.parse(p)) : [];
+    return NextResponse.json({ items, can });
   } catch (e) {
     return handle(e);
   }

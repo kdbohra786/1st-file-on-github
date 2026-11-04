@@ -1,21 +1,11 @@
-import { auth, signOut } from "@/lib/auth/config";
+import { PanelShell } from "@/components/panel-shell";
 
-export default async function Page() {
-  const session = await auth();
+export default function Page() {
   return (
-    <main className="mx-auto max-w-3xl p-8">
-      <h1 className="text-2xl font-bold text-indigo-600">Super Admin</h1>
-      <p className="mt-2 opacity-70">
-        Signed in as {session?.user.email} ({session?.user.role}). Panel features arrive in the next Phase 1 steps.
-      </p>
-      <form
-        action={async () => {
-          "use server";
-          await signOut({ redirectTo: "/login" });
-        }}
-      >
-        <button className="mt-4 rounded border px-3 py-1">Sign out</button>
-      </form>
-    </main>
+    <PanelShell title="Super Admin" accent="indigo">
+      <main className="mx-auto max-w-3xl p-8">
+        <p className="opacity-70">Companies, individuals, plans and audit screens arrive in the next slice.</p>
+      </main>
+    </PanelShell>
   );
 }

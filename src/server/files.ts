@@ -3,7 +3,7 @@ import { and, eq, inArray, isNull, isNotNull, sql } from "drizzle-orm";
 import { getDb } from "@/db/client";
 import { nodes, plans, platformSettings, sharedFolderAccess, tenants, uploadSessions } from "@/db/schema";
 import { authorize } from "@/lib/authorize";
-import type { Permission } from "@/lib/permissions";
+import { PERMISSIONS, type Permission } from "@/lib/permissions";
 import { getStorage, objectKey } from "@/lib/storage";
 import { audit } from "./audit";
 import { assertWritable, type Ctx } from "./context";
@@ -431,3 +431,9 @@ export async function listTrash(ctx: Ctx) {
 }
 
 void sharedFolderAccess;
+
+/** Which actions the caller may take inside a folder (used to hide UI controls; the server still enforces). */
+export async function permissionsIn(ctx: Ctx, folderId: string): Promise<Permission[]> {
+  const pathIds = await pathIdsFor(ctx.tenantId, folderId);
+  return PERMISSIONS.filter((p) => authorize(ctx.actor, p, { tenantId: ctx.tenantId, pathIds }).ok);
+}

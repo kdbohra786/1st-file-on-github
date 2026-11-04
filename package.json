@@ -17,7 +17,8 @@
     "gen:secrets": "tsx scripts/gen-secrets.ts",
     "dev:stack": "docker compose -f docker-compose.dev.yml up -d",
     "dev:stack:down": "docker compose -f docker-compose.dev.yml down",
-    "test:api": "tsx scripts/e2e-api.ts"
+    "test:api": "tsx scripts/e2e-api.ts",
+    "test:ui": "node scripts/e2e-ui.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1161.0",
@@ -47,6 +48,7 @@
     "drizzle-kit": "^0.31.11",
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.4.4",
+    "playwright": "^1.63.0",
     "prettier": "^3.9.10",
     "tailwindcss": "^4.3.4",
     "tsx": "^4.23.15",

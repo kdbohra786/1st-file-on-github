@@ -21,10 +21,16 @@
 - Quota (double-checked), plan max file size, blocked extensions, read-only/suspended tenants, presign rate limits, audit entries
 - `npm run test:api`: 33 live end-to-end checks (multipart, download bytes, isolation 403/404, shared-folder viewer, trash/restore, quota, read-only), re-runnable
 
+## Done (Phase 1, slice 3: file manager UI)
+- `FileManager` component for `/app` and `/company`: breadcrumbs, list view, upload (multi-file, drag-and-drop, 4 parallel parts, retry/backoff, pause/resume/cancel), download, preview (image/video/audio/PDF/text), new folder, rename, delete to Trash, restore, storage meter with 80/90/100% warnings
+- Actions are hidden from the listing's `can` permissions; the server still enforces
+- `npm run test:ui`: real Chromium run (browser -> SeaweedFS multipart upload with CORS + ETag, preview, download, hidden controls for Contributor and Viewer, route guard)
+
 ## In progress
-- Phase 1 slice 3: file manager UI, then signup/reset, share links, super admin + company admin CRUD
+- Phase 1 slice 4: signup + password reset, share links, super admin + company admin management screens
 
 ## Pending
 - Phase 0 leftovers: Playwright config, CI workflow, Dockerfile/prod compose, deploy docs (DEPLOY, SEAWEEDFS-SETUP, BACKUP-RESTORE, UPGRADE, OPERATIONS)
-- Phase 1 remaining: signup + password reset, file manager UI, quota, share links, super admin CRUD, member CRUD, DB-level isolation tests
+- Phase 1 remaining: signup + password reset, share links, super admin CRUD (incl. open any bucket), member CRUD + permissions UI, Dockerfile/compose/CI, first server deploy
+- Not yet covered by UI tests: pause/resume, folder drag-and-drop, grid view, search, move dialog, starred/recent
 - Phase 2, Phase 3 as per master prompt
